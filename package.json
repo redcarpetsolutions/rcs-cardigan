@@ -1,32 +1,32 @@
 {
-  "name": "rcs-cardigan",
-  "version": "0.1.1",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Khaled Romdhane <heiyukidev@gmail.com>",
-  "license": "MIT",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.17.1",
-    "express": "^4.15.2",
-    "hyvalidator": "^0.8.0",
-    "jsonwebtoken": "^7.4.0",
-    "rcs-jsonstyle": "^0.1.1",
-    "reactive-mongodb": "^0.1.4"
-  },
-  "devDependencies": {
-    "assert": "^1.4.1",
-    "mocha": "^3.3.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/redcarpetsolutions/rcs-cardigan.git"
-  },
-  "bugs": {
-    "url": "https://github.com/redcarpetsolutions/rcs-cardigan/issues"
-  },
-  "homepage": "https://github.com/redcarpetsolutions/rcs-cardigan#readme",
-  "description": ""
+    "name": "rcs-cardigan",
+    "version": "0.1.2",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Khaled Romdhane <heiyukidev@gmail.com>",
+    "license": "MIT",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.17.1",
+        "express": "^4.15.2",
+        "hyvalidator": "^0.8.0",
+        "jsonwebtoken": "^7.4.0",
+        "rcs-jsonstyle": "^0.1.1",
+        "reactive-mongodb": "^0.1.4"
+    },
+    "devDependencies": {
+        "assert": "^1.4.1",
+        "mocha": "^3.3.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/redcarpetsolutions/rcs-cardigan.git"
+    },
+    "bugs": {
+        "url": "https://github.com/redcarpetsolutions/rcs-cardigan/issues"
+    },
+    "homepage": "https://github.com/redcarpetsolutions/rcs-cardigan#readme",
+    "description": ""
 }
