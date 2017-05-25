@@ -5,6 +5,7 @@ class Model {
     constructor(name) {
         this.router = require('express').Router();
         this.route = '/' + name;
+        
         this.collection = new Collection(name);
 
         this.router.get('/', (req, res) => {
@@ -23,8 +24,9 @@ class Model {
                 var data = new Array();
                 this.collection.find(JSON.parse(req.params.query)).subscribe((item) => {
                     data.push(item);
-                }, () => {
-
+                }, (err) => {
+                    console.log(err);
+                    rcsres.error(res);
                 }, () => {
                     rcsres.json(res, data);
                 });
@@ -38,8 +40,48 @@ class Model {
             if (req.params.id.length === 24) {
                 this.collection.findById(req.params.id).subscribe((item) => {
                     rcsres.json(res, item);
+                }, (err) => {
+                    console.log(err);
+                    rcsres.error(res);
                 }, () => {
+                });
+            } else {
+                rcsres.badRequest(res, "The id provided is not a valid ObjectID");
+            }
+        });
+
+        this.router.post('/', (req, res) => {
+            this.collection.insert(req.body).subscribe(() => {
+            }, (err) => {
+                console.log(err);
+                rcsres.error(res);
+            }, () => {
+                rcsres.created(res);
+            });
+        });
+
+        this.router.put('/:id', (req, res) => {
+            if (req.params.id.length === 24) {
+                this.collection.updateById(req.params.id, req.body).subscribe(() => {
+                }, (err) => {
+                    console.log(err);
+                    rcsres.error(res);
                 }, () => {
+                    rcsres.accepted(res);
+                });
+            } else {
+                rcsres.badRequest(res, "The id provided is not a valid ObjectID");
+            }
+        });
+
+        this.router.delete('/:id', (req, res) => {
+            if (req.params.id.length === 24) {
+                this.collection.deleteById(req.params.id).subscribe((item) => {
+                }, (err) => {
+                    console.log(err);
+                    rcsres.error(res);
+                }, () => {
+                    rcsres.accepted(res);
                 });
             } else {
                 rcsres.badRequest(res, "The id provided is not a valid ObjectID");

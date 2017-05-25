@@ -1,17 +1,16 @@
-const express = require('express');
-var app = express();
+const app = require('./index.js').app;
+const Model = require('./index.js').Model;
 
-const connect = require('reactive-mongodb').connect;
-connect('mongodb://127.0.0.1:27017/test').then(() => {
-    var Model = require('./modules/model.module.js');
-    var x = new Model('test');
-    app.use(x.route, x.router);
-});
 
+const User = new Model('users');
+app.authModel(User);
+const Call = new Model('calls');
+app.addCollection(Call);
 
 
 
-
-
-app.listen(9999);
-console.log('App is running on port 9999');
+var options = {
+    port: 3000,
+    databaseUrl: 'mongodb://127.0.0.1:27017/test'
+}
+app.start(options);

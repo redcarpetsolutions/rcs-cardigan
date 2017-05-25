@@ -1,6 +1,6 @@
 {
   "name": "rcs-cardigan",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,10 +9,13 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
+    "hyvalidator": "^0.8.0",
+    "jsonwebtoken": "^7.4.0",
     "rcs-jsonstyle": "^0.1.1",
-    "reactive-mongodb": "^0.1.1"
+    "reactive-mongodb": "^0.1.4"
   },
   "devDependencies": {
     "assert": "^1.4.1",
