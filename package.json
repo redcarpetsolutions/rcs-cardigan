@@ -1,12 +1,11 @@
 {
   "name": "rcs-cardigan",
-  "version": "0.1.0",
-  "description": "",
+  "version": "0.1.1",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Khaled Romdhane <heiyukidev@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -20,5 +19,14 @@
   "devDependencies": {
     "assert": "^1.4.1",
     "mocha": "^3.3.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/redcarpetsolutions/rcs-cardigan.git"
+  },
+  "bugs": {
+    "url": "https://github.com/redcarpetsolutions/rcs-cardigan/issues"
+  },
+  "homepage": "https://github.com/redcarpetsolutions/rcs-cardigan#readme",
+  "description": ""
 }
