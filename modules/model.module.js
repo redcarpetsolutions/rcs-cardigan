@@ -4,8 +4,8 @@ const Collection = require('reactive-mongodb').Collection;
 class Model {
     constructor(name) {
         this.router = require('express').Router();
-        this.route = '/' + name;
-        
+        this.route = '/api/' + name;
+
         this.collection = new Collection(name);
 
         this.router.get('/', (req, res) => {
@@ -43,16 +43,14 @@ class Model {
                 }, (err) => {
                     console.log(err);
                     rcsres.error(res);
-                }, () => {
-                });
+                }, () => {});
             } else {
                 rcsres.badRequest(res, "The id provided is not a valid ObjectID");
             }
         });
 
         this.router.post('/', (req, res) => {
-            this.collection.insert(req.body).subscribe(() => {
-            }, (err) => {
+            this.collection.insert(req.body).subscribe(() => {}, (err) => {
                 console.log(err);
                 rcsres.error(res);
             }, () => {
@@ -62,8 +60,7 @@ class Model {
 
         this.router.put('/:id', (req, res) => {
             if (req.params.id.length === 24) {
-                this.collection.updateById(req.params.id, req.body).subscribe(() => {
-                }, (err) => {
+                this.collection.updateById(req.params.id, req.body).subscribe(() => {}, (err) => {
                     console.log(err);
                     rcsres.error(res);
                 }, () => {
@@ -76,8 +73,7 @@ class Model {
 
         this.router.delete('/:id', (req, res) => {
             if (req.params.id.length === 24) {
-                this.collection.deleteById(req.params.id).subscribe((item) => {
-                }, (err) => {
+                this.collection.deleteById(req.params.id).subscribe((item) => {}, (err) => {
                     console.log(err);
                     rcsres.error(res);
                 }, () => {
