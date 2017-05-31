@@ -2,8 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 var app = express();
-app.use(bodyParser());
 
+app.use(bodyParser());
 
 app.start = (options) => {
     const connect = require('reactive-mongodb').connect;
@@ -43,11 +43,8 @@ app.addCollection = (model) => {
     app.use(model.route, model.router);
 }
 
-app.statics = (path) => {
-    app.use(express.static(__dirname + '/' + path));
-}
 
 
 module.exports.app = app;
-
+module.exports.static = express.static;
 module.exports.Model = require('./modules/model.module.js');
