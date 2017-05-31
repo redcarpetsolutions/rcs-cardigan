@@ -14,7 +14,7 @@ app.start = (options) => {
     });
 
     if (options && options.cors === true) {
-        app.use(function(req, res, next) {
+        app.use(function (req, res, next) {
             res.header('Access-Control-Allow-Origin', '*');
             res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
             res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
@@ -43,6 +43,9 @@ app.addCollection = (model) => {
     app.use(model.route, model.router);
 }
 
+app.statics = (path) => {
+    app.use(express.static(__dirname + '/' + path));
+}
 
 
 module.exports.app = app;
