@@ -54,7 +54,7 @@ router.post('/register', (req, res) => {
                 var salt = bcrypt.genSaltSync(10);
                 var hash = bcrypt.hashSync(req.body.password, salt);
                 var user = req.body;
-                user.password= hash;
+                user.password = hash;
                 user.role = "user";
 
                 User.collection.insert(user).subscribe(null, (err) => {
@@ -70,6 +70,19 @@ router.post('/register', (req, res) => {
         });
     }
 });
+
+router.get('/info', (req, res) => {
+    let header = req.headers.authorization;
+    let arr = header.split(' ');
+    if(arr[0] !== 'bearer'){
+        res.send({});
+    }
+    let token = arr[1];
+
+    let decoded = jwt.decode(token);
+    res.send(decoded);
+});
+
 router.setModel = (user) => {
     User = user;
 }
