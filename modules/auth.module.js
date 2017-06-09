@@ -5,6 +5,7 @@ const rcsres = require('rcs-jsonstyle');
 const jwt = require('jsonwebtoken');
 const config = require('./config.module.js');
 const bcrypt = require('bcryptjs');
+const Collection = require('reactive-mongodb').Collection;
 
 var User;
 router.post('/login', (req, res) => {
@@ -74,13 +75,21 @@ router.post('/register', (req, res) => {
 router.get('/info', (req, res) => {
     let header = req.headers.authorization;
     let arr = header.split(' ');
-    if(arr[0] !== 'bearer'){
+    if (arr[0] !== 'bearer') {
         res.send({});
     }
     let token = arr[1];
 
     let decoded = jwt.decode(token);
-    res.send(decoded);
+
+
+    let Users = new Collection('users');
+    Users.findOne({ "email": decoded.email }).subscribe(data => {
+        rcsres.json(res,data);
+    }, (err) => {
+        console.log(err);
+        rcsres.error(res,err);
+    });
 });
 
 router.setModel = (user) => {
