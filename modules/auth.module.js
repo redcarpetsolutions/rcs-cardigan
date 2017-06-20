@@ -56,8 +56,9 @@ router.post('/register', (req, res) => {
                 var hash = bcrypt.hashSync(req.body.password, salt);
                 var user = req.body;
                 user.password = hash;
-                user.role = "user";
-
+                if (!user.role) {
+                    user.role = "user";
+                }
                 User.collection.insert(user).subscribe(null, (err) => {
                     console.log(err);
                     rcsres.error(res);
@@ -85,10 +86,10 @@ router.get('/info', (req, res) => {
 
     let Users = new Collection('users');
     Users.findOne({ "email": decoded.email }).subscribe(data => {
-        rcsres.json(res,data);
+        rcsres.json(res, data);
     }, (err) => {
         console.log(err);
-        rcsres.error(res,err);
+        rcsres.error(res, err);
     });
 });
 
