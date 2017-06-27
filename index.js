@@ -26,16 +26,17 @@ app.start = (options) => {
             }
         });
     }
-
-    app.listen(options.port);
-    console.log('App is running on port ' + options.port);
+    app.set('port',options.port)
+    app.listen(app.get('port'));
+    console.log('App is running on port ' + app.get('port'));
     console.log('Thank you for Using Cardigan By Red Carpet Solutions');
 }
 
-app.authModel = (model) => {
+app.authModel = (model, options) => {
     app.use(model.route, model.router);
     var authRouter = require('./modules/auth.module.js');
     authRouter.setModel(model);
+    authRouter.setOptions(options);
     app.use('/auth', authRouter);
 }
 
