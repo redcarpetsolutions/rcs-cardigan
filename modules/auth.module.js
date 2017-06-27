@@ -70,9 +70,9 @@ router.post('/register', (req, res) => {
                 user.password = hash;
                 if (!user.valid) {
                     if (options.emailValidation) {
-                        user.valid = true;
-                    } else {
                         user.valid = false;
+                    } else {
+                        user.valid = true;
                     }
                     if (!user.role) {
                         user.role = "user";
