@@ -82,7 +82,7 @@ router.post('/register', (req, res) => {
                     console.log(err);
                     rcsres.error(res);
                 }, () => {
-                    let url = req.get('host');
+                    let url = req.protocol +"://"+req.get('host');
                     let payload = {
                         email: user.email
                     }

@@ -5,7 +5,7 @@ class Model {
     constructor(name, model, accessControl) {
         this.router = require('express').Router();
         this.route = '/api/' + name;
-
+        this.name = name;
         this.collection = new Collection(name);
 
         this.router.get('/', (req, res) => {
