@@ -9,13 +9,14 @@ const Collection = require('reactive-mongodb').Collection;
 const mailer = require('./email.module.js');
 
 var User;
-let emailContent=`
+let emailContent = `
 <h1>Validation Email</h1>
 <p>Your Account validation link is:</p>
 `;
 let options = {
     emailValidation: false,
-    emailContent
+    emailContent,
+    appEmail: "redcarpetsolutions2017@gmail.com"
 }
 router.post('/login', (req, res) => {
     var rules = new Strings.Rule;
@@ -68,6 +69,7 @@ router.post('/register', (req, res) => {
                 var hash = bcrypt.hashSync(req.body.password, salt);
                 var user = req.body;
                 user.password = hash;
+                user.salt = salt;
                 if (!user.valid) {
                     if (options.emailValidation) {
                         user.valid = false;
@@ -82,13 +84,13 @@ router.post('/register', (req, res) => {
                     console.log(err);
                     rcsres.error(res);
                 }, () => {
-                    let url = req.protocol +"://"+req.get('host');
+                    let url = req.protocol + "://" + req.get('host');
                     let payload = {
                         email: user.email
                     }
                     let token = jwt.sign(payload, config.jwtsecret);
                     url += "/auth/validation/" + token;
-                    mailer.sendEmail(user.email, "ghalia.ouderni@esprit.tn", "Validation Email", options.emailContent+"<a href=\"" + url + "\">" + url + "</a>");
+                    mailer.sendEmail(user.email, options.appEmail, "Validation Email", options.emailContent + "<a href=\"" + url + "\">" + url + "</a>");
                     rcsres.created(res, "Confirmation Email Sent");
                 });
             }
@@ -119,6 +121,49 @@ router.get('/info', (req, res) => {
     });
 });
 
+router.post('/changepwd', (req, res) => {
+    let payload = req.body;
+    if (payload.password && payload.newPassword) {
+        let header = req.headers.authorization;
+        let arr = header.split(' ');
+        if (arr[0] !== 'bearer') {
+            res.send({});
+        }
+        let token = arr[1];
+
+        let decoded = jwt.decode(token);
+
+        let Users = new Collection('users');
+        Users.findOne({ "email": decoded.email }).subscribe(data => {
+            let pass = bcrypt.hashSync(req.body.password, data.salt);
+            if (data.password === pass) {
+                var salt = bcrypt.genSaltSync(10);
+                var hash = bcrypt.hashSync(req.body.newPassword, salt);
+                data.salt = salt;
+                data.password = hash;
+                Users.updateById(data._id.toString(), data).subscribe(null, err => console.log(err),
+                    () => {
+                        let response = { message: "Your password have been updated", user: data };
+                        rcsres.json(res, response);
+                    });
+            } else {
+                rcsres.unauthorized(res, { message: "Wrong password" });
+            }
+        }, (err) => {
+            console.log(err);
+            rcsres.error(res, err);
+        });
+    } else {
+        rcsres.badRequest(res, {
+            message: " you have to send the following payload as your post request Body",
+            payload: {
+                password: "your old password",
+                newPassword: "your New Password"
+            }
+        })
+    }
+});
+
 router.get('/validation/:token', (req, res) => {
     let token = req.params.token;
 
@@ -136,12 +181,13 @@ router.get('/validation/:token', (req, res) => {
         console.log(err);
         rcsres.error(res, err);
     });
+
 });
 
 router.setModel = (user) => {
     User = user;
 }
 router.setOptions = (newOptions) => {
-    options = newOptions;
+    Object.assign(options, newOptions);
 }
 module.exports = router;
