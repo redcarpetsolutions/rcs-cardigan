@@ -1,5 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const rcsres = require('rcs-jsonstyle');
+
 var chalk = require('chalk');
 
 var app = express();
@@ -175,7 +177,7 @@ app.addCollection = (model) => {
         }
     });
 }
-
+app.setProvider = rcsres.setProvider;
 
 
 module.exports.app = app;

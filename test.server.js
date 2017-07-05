@@ -19,3 +19,4 @@ app.authModel(User,{
 const Call = new Model('calls');
 app.addCollection(Call);
 
+app.setProvider('Toutou is here');
