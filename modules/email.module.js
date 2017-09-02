@@ -18,6 +18,6 @@ module.exports.sendEmail = function (to, email, subject, content) {
         form.append('subject', subject);
         form.append('content', content);
         form.append('target', 'client');
-        form.append('username', "ghalia");
+        form.append('username', "default");
     });
 }
