@@ -19,15 +19,17 @@ let options = {
     appEmail: "redcarpetsolutions2017@gmail.com"
 }
 router.post('/login', (req, res) => {
-    var rules = new Strings.Rule;
-    rules.setIsEmail();
-    var errors = validate(req.body.email, rules);
-    if (errors) {
-        rcsres.badRequest(res, "Please Enter a valid Email Adress");
+    if (!req.body.username) {
+        var rules = new Strings.Rule;
+        rules.setIsEmail();
+        var errors = validate(req.body.email, rules);
+        if (errors) {
+            rcsres.badRequest(res, "Please Enter a valid Email Adress");
+        }
     }
     else {
         let query = new Object();
-        if (!req.body.username) {
+        if (req.body.username) {
             query = { username: req.body.username };
         } else {
             query = { email: req.body.email };
