@@ -27,38 +27,37 @@ router.post('/login', (req, res) => {
             rcsres.badRequest(res, "Please Enter a valid Email Adress");
         }
     }
-    else {
-        let query = new Object();
-        if (req.body.username) {
-            query = { username: req.body.username };
-        } else {
-            query = { email: req.body.email };
-        }
-        User.collection.findOne(query).subscribe((data) => {
-            if (data !== null) {
-                if (!options.emailValidation || (options.emailValidation && data.valid)) {
-                    if (bcrypt.compareSync(req.body.password, data.password)) {
-                        var payload = {
-                            email: data.email,
-                            password: data.password,
-                            role: data.role
-                        }
-                        var token = jwt.sign(payload, config.jwtsecret);
-                        rcsres.json(res, { user: data, token: token });
-                    } else {
-                        rcsres.unauthorized(res, "Wrong Password");
+    let query = new Object();
+    if (req.body.username) {
+        query = { username: req.body.username };
+    } else {
+        query = { email: req.body.email };
+    }
+    User.collection.findOne(query).subscribe((data) => {
+        if (data !== null) {
+            if (!options.emailValidation || (options.emailValidation && data.valid)) {
+                if (bcrypt.compareSync(req.body.password, data.password)) {
+                    var payload = {
+                        email: data.email,
+                        password: data.password,
+                        role: data.role
                     }
+                    var token = jwt.sign(payload, config.jwtsecret);
+                    rcsres.json(res, { user: data, token: token });
                 } else {
-                    rcsres.unauthorized(res, "This Account has not been activated");
+                    rcsres.unauthorized(res, "Wrong Password");
                 }
             } else {
-                rcsres.badRequest(res, "This User Doesn't Exist");
+                rcsres.unauthorized(res, "This Account has not been activated");
             }
-        }, (err) => {
-            console.log(err);
-            rcsres.error(res);
-        });
-    }
+        } else {
+            rcsres.badRequest(res, "This User Doesn't Exist");
+        }
+    }, (err) => {
+        console.log(err);
+        rcsres.error(res);
+    });
+
 
 });
 
